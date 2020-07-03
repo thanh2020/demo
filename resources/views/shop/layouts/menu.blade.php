@@ -1,0 +1,157 @@
+<style>
+    .main-menu-area, .shopping-cart a.shop-link, .shopping-cart-out { height: 45px; }
+    .mainmenu nav ul li a { line-height: 45px; }
+    .shipping-cart-overly { top: 45px }
+</style>
+<header class="main-menu-area">
+    <div class="container">
+        <div class="row">
+            <!-- SHOPPING-CART START -->
+            <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 pull-right shopingcartarea">
+                <div class="shopping-cart-out pull-right">
+                    <div class="shopping-cart">
+                        <a class="shop-link" href="{{asset('cart/show')}}" title="View my shopping cart">
+                            <i class="fa fa-shopping-cart cart-icon"></i>
+                            <b>My Cart</b>
+                            <span class="ajax-cart-quantity">{{Cart::content()->count()}}</span>
+                        </a>
+                        <div class="shipping-cart-overly">
+                            <!-- {{$carts = Cart::content()}} -->
+                            @foreach($carts as $cart)
+
+                            <div class="shipping-item">
+                                <a href="{{ route('cart', ['rowId' => $cart->rowId]) }}"><span class="cross-icon"><i class="fa fa-times-circle">222</i></span></a>
+                                <div class="shipping-item-image">
+                                    <a href=""><img width="40px" src="{{asset($cart->options->image)}}" alt="{{$cart->name}}" /></a>
+                                </div>
+                                <div class="shipping-item-text">
+                                    <span><span class="pro-quan-x">{{$cart->name}}</span> <a href="" class="pro-cat"></a></span>
+                                    <span class="pro-quality"><a href="#">S,Black</a></span>
+                                    <p>{{number_format($cart->price)}}đ</p>
+                                </div>
+                            </div>
+                            @endforeach
+                            <div class="shipping-total-bill">
+                                <div class="cart-prices">
+                                    <span class="shipping-cost">$2.00</span>
+                                    <span>Shipping</span>
+                                </div>
+                                <div class="total-shipping-prices">
+                                    <span class="shipping-total">{{Cart::subtotal(0)}}vnđ</span>
+                                    <span>Total</span>
+                                </div>
+                            </div>
+                            <div class="shipping-checkout-btn">
+                                <a href="checkout.html">Check out <i class="fa fa-chevron-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- SHOPPING-CART END -->
+            <!-- MAINMENU START -->
+            <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12 no-padding-right menuarea">
+                <div class="mainmenu">
+                    <nav>
+                        <ul class="list-inline mega-menu">
+                            <li class="active"><a href="/">Trang Chủ</a></li>
+                            @if(!empty($categories))
+                                @foreach($categories as $category)
+                                    @if($category->parent_id == 0)
+                                        <li>
+                                            <a href="{{ route('shop.category', ['slug' => $category->slug]) }}">{{ $category->name }}</a>
+                                            <!-- DRODOWN-MEGA-MENU START -->
+                                            <!-- <div class="drodown-mega-menu">
+                                                <div class="left-mega col-xs-6">
+                                                    <div class="mega-menu-list">
+                                                        <ul>
+                                                            @foreach($categories as $child)
+                                                                @if($category->id == $child->parent_id)
+                                                                    <li><a href="{{ route('shop.category', ['slug' => $child->slug]) }}">{{ $child->name }}</a></li>
+                                                                @endif
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+                                            </div> -->
+                                            <!-- DRODOWN-MEGA-MENU END -->
+                                        </li>
+                                    @endif
+                                @endforeach
+                            @endif
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- MAINMENU END -->
+        </div>
+        <div class="row">
+            <!-- MOBILE MENU START -->
+            <div class="col-sm-12 mobile-menu-area">
+                <div class="mobile-menu hidden-md hidden-lg" id="mob-menu">
+                    <span class="mobile-menu-title">MENU</span>
+                    <nav>
+                        <ul>
+                            <li><a href="index.html">Home</a>
+                                <ul>
+                                    <li><a href="index.html">Home variation 1</a></li>
+                                    <li><a href="index-2.html">Home variation 2</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="shop-gird.html">Women</a>
+                                <ul>
+                                    <li><a href="shop-gird.html">Tops</a>
+                                        <ul>
+                                            <li><a href="shop-gird.html">T-Shirts</a></li>
+                                            <li><a href="shop-gird.html">Blouses</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="shop-gird.html">Dresses</a>
+                                        <ul>
+                                            <li><a href="shop-gird.html">Casual Dresses</a></li>
+                                            <li><a href="shop-gird.html">Summer Dresses</a></li>
+                                            <li><a href="shop-gird.html">Evening Dresses</a></li>
+                                        </ul>
+                                    </li>
+
+                                </ul>
+                            </li>
+                            <li><a href="shop-gird.html">men</a>
+                                <ul>
+                                    <li><a href="shop-gird.html">Tops</a>
+                                        <ul>
+                                            <li><a href="shop-gird.html">Sports</a></li>
+                                            <li><a href="shop-gird.html">Day</a></li>
+                                            <li><a href="shop-gird.html">Evening</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="shop-gird.html">Blouses</a>
+                                        <ul>
+                                            <li><a href="shop-gird.html">Handbag</a></li>
+                                            <li><a href="shop-gird.html">Headphone</a></li>
+                                            <li><a href="shop-gird.html">Houseware</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a href="shop-gird.html">Accessories</a>
+                                        <ul>
+                                            <li><a href="shop-gird.html">Houseware</a></li>
+                                            <li><a href="shop-gird.html">Home</a></li>
+                                            <li><a href="shop-gird.html">Health & Beauty</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="shop-gird.html">clothing</a></li>
+                            <li><a href="shop-gird.html">tops</a></li>
+                            <li><a href="shop-gird.html">T-shirts</a></li>
+                            <li><a href="#">Delivery</a></li>
+                            <li><a href="about-us.html">About us</a></li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <!-- MOBILE MENU END -->
+        </div>
+    </div>
+</header>
