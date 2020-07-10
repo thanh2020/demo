@@ -47,6 +47,8 @@ Route::group(['prefix' => 'admin','as' => 'admin.','middleware'=>'Out'], functio
 
     Route::resource('user', 'UserController');
 
+    Route::resource('rating', 'RatingController');
+
     Route::resource('layout', 'LayoutController');
 });
 Route::get('delete/{id}','NewController@delete')->name('delete');

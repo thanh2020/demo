@@ -24,7 +24,8 @@ class CartController extends Controller
         $data['weight'] = $product->price;
     	$data['options']['image'] = $product->image;
         Cart::add($data);
-        return back();
+        // return back();
+        return redirect('cart/show');
     }
     public function getShowCart()
     {

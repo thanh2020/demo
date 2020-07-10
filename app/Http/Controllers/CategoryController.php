@@ -15,7 +15,7 @@ class CategoryController extends Controller
 
     public function index()
     {
-        $data = Category::latest()->paginate(5); // sắp sếp theo thứ tự mới nhất && phân trang
+        $data = Category::latest()->paginate(10); // sắp sếp theo thứ tự mới nhất && phân trang
 
         return view('admin.category.index', [
             'data' => $data
@@ -64,19 +64,20 @@ class CategoryController extends Controller
         $category->slug = str_slug($request->input('name'));
         $category->parent_id = $request->input('parent_id');
 
-        if ($request->hasFile('image')) {
-            // get file
-            $file = $request->file('image');
-            // get ten
-            $filename = time().'_'.$file->getClientOriginalName();
-            // duong dan upload
-            $path_upload = 'uploads/category/';
-            // upload file
-            $request->file('image')->move($path_upload,$filename);
+        // Lưu hình ảnh
+        // if ($request->hasFile('image')) {
+        //     // get file
+        //     $file = $request->file('image');
+        //     // get ten
+        //     $filename = time().'_'.$file->getClientOriginalName();
+        //     // duong dan upload
+        //     $path_upload = 'uploads/category/';
+        //     // upload file
+        //     $request->file('image')->move($path_upload,$filename);
 
-            $category->image = $path_upload.$filename;
+        //     $category->image = $path_upload.$filename;
 
-        }
+        // }
 
         
         $category->is_active = $is_active;
@@ -146,20 +147,20 @@ class CategoryController extends Controller
         $category->parent_id = $request->input('parent_id');
         $category->is_active = $is_active;
 
-        if ($request->hasFile('new_image')) {
-            // xóa file cũ
-            @unlink(public_path($category->image));
-            // get file mới
-            $file = $request->file('new_image');
-            // get tên
-            $filename = time().'_'.$file->getClientOriginalName();
-            // duong dan upload
-            $path_upload = 'uploads/category/';
-            // upload file
-            $request->file('new_image')->move($path_upload,$filename);
+        // if ($request->hasFile('new_image')) {
+        //     // xóa file cũ
+        //     @unlink(public_path($category->image));
+        //     // get file mới
+        //     $file = $request->file('new_image');
+        //     // get tên
+        //     $filename = time().'_'.$file->getClientOriginalName();
+        //     // duong dan upload
+        //     $path_upload = 'uploads/category/';
+        //     // upload file
+        //     $request->file('new_image')->move($path_upload,$filename);
 
-            $category->image = $path_upload.$filename;
-        }
+        //     $category->image = $path_upload.$filename;
+        // }
 
         $category->position = $request->input('position');
         $category->save();
@@ -183,3 +184,6 @@ class CategoryController extends Controller
         ], 200);
     }
 }
+
+            // xóa file ảnh cũ
+            // @unlink(public_path($category->image));

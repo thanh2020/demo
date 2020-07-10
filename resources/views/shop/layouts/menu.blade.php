@@ -19,8 +19,8 @@
                             <!-- {{$carts = Cart::content()}} -->
                             @foreach($carts as $cart)
 
-                            <div class="shipping-item">
-                                <a href="{{ route('cart', ['rowId' => $cart->rowId]) }}"><span class="cross-icon"><i class="fa fa-times-circle">222</i></span></a>
+                            <div class="shipping-item" style="height: 110px;">
+                                <a href="{{ route('cart', ['rowId' => $cart->rowId]) }}"><span class="cross-icon"><i class="fa fa-times-circle"></i></span></a>
                                 <div class="shipping-item-image">
                                     <a href=""><img width="40px" src="{{asset($cart->options->image)}}" alt="{{$cart->name}}" /></a>
                                 </div>
@@ -33,7 +33,7 @@
                             @endforeach
                             <div class="shipping-total-bill">
                                 <div class="cart-prices">
-                                    <span class="shipping-cost">$2.00</span>
+                                    <span class="shipping-cost">{{Cart::count()}} Product</span>
                                     <span>Shipping</span>
                                 </div>
                                 <div class="total-shipping-prices">

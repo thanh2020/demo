@@ -44,37 +44,31 @@
                         <div class="category-menu-list">
                             <ul>
                                 @if(!empty($categories))
-                                @foreach($categories as $categorie)
-                                <li>
-                                    <!-- Bước 1 :  Hiển thị danh mục cha -->
-                                    @if($categorie->parent_id == 0)
-                                    <a href="{{ route('shop.category', ['slug' => $categorie->slug]) }}">
-                                        {{ $categorie->name }}<i class="fa fa-angle-right"></i>
-                                    </a>
+                                    @foreach($categories as $categorie)
+                                    <li>
+                                        <!-- Bước 1 :  Hiển thị danh mục cha -->
+                                        @if($categorie->parent_id == 0)
+                                        <a href="{{ route('shop.category', ['slug' => $categorie->slug]) }}">
+                                            {{ $categorie->name }}<i class="fa fa-angle-right"></i>
+                                        </a>
 
-                                    <!-- Bước 2 : Hiển thị danh mục con -->
-
-                                    <?php $categoryChilds =  \DB::table('categories')->where('parent_id', $categorie->id)->limit(8)->orderBy('id', 'desc')->get(); ?>
-                                    @if($categoryChilds->isNotEmpty())
-                                    <div class="cat-left-drop-menu-single">
-                                        <ul>
-                                            @foreach($categoryChilds as $categoryChild)
-                                            <li>
-                                                <a style="top: -15px" href="{{ route('shop.slug', ['category' => $categorie->slug , 'slug' => $categoryChild->slug]) }}">{{$categoryChild->name}}</a>
-                                            </li>
-
-                                            @endforeach
-
-
-
-                                        </ul>
-                                    </div>
-                                    @endif
-
-                                                    @endif
+                                        <!-- Bước 2 : Hiển thị danh mục con -->
+                                        <?php $categoryChilds =  \DB::table('categories')->where('parent_id', $categorie->id)->limit(8)->orderBy('id', 'desc')->get(); ?>
+                                        @if($categoryChilds->isNotEmpty())
+                                        <div class="cat-left-drop-menu-single">
+                                            <ul>
+                                                @foreach($categoryChilds as $categoryChild)
+                                                <li>
+                                                    <a style="top: -15px" href="{{ route('shop.slug', ['category' => $categorie->slug , 'slug' => $categoryChild->slug]) }}">{{$categoryChild->name}}</a>
                                                 </li>
                                                 @endforeach
-                                                @endif
+                                            </ul>
+                                        </div>
+                                        @endif
+                                        @endif
+                                    </li>
+                                    @endforeach
+                                @endif
                                             </ul>
                                         </div>
                                         <!-- CATEGORY-MENU-LIST END -->

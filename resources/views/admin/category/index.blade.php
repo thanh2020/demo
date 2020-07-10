@@ -10,7 +10,6 @@
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
             Open modal
           </button>
-
           <!-- The Modal -->
           <div class="modal" id="myModal">
             <div class="modal-dialog">
@@ -21,13 +20,11 @@
                   <h4 class="modal-title">Modal Heading</h4>
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
-
                 <div class="box-body table-responsive no-padding">
                         <table class="table table-hover">
                             <tbody>
                             <tr>
                                 <th>Tên danh mục</th>
-                                <th>Hình ảnh</th>
                                 <th>Danh mục cha</th>
                                 <th>Vị trí</th>
                                 <th>Trạng thái</th>
@@ -38,11 +35,6 @@
                             @foreach($data as $key => $item)
                                 <tr class="item-{{ $item->id }}">
                                     <td>{{ $item->name }}</td>
-                                    <td>
-                                        @if ($item->image)
-                                            <img src="{{asset($item->image)}}" width="50" height="50">
-                                        @endif
-                                    </td>
                                     <td>{{ $item->parent->name or '(trống)' }}</td>
                                     <td>{{ $item->position }}</td>
                                     <td class="{{ $item->get($item->is_active)['class'] }}">{{ $item->get($item->is_active)['name1'] }}</td>
@@ -55,20 +47,14 @@
                             @endforeach
                         </table>
                     </div>
-
-                
                 <!-- Modal body -->
                 <div class="modal-body">
                   Modal body..
                 </div>
-                
                 <!-- Modal footer -->
                 <div class="modal-footer">
                   <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                </div>
-                
-
-                
+                </div>  
               </div>
             </div>
           </div>
@@ -107,7 +93,6 @@
                             <tbody>
                             <tr>
                                 <th>Tên danh mục</th>
-                                <th>Hình ảnh</th>
                                 <th>Danh mục cha</th>
                                 <th>Vị trí</th>
                                 <th>Trạng thái</th>
@@ -119,11 +104,6 @@
                             @foreach($data as $key => $item)
                                 <tr class="item-{{ $item->id }}">
                                     <td>{{ $item->name }}</td>
-                                    <td>
-                                        @if ($item->image)
-                                            <img src="{{asset($item->image)}}" width="50" height="50">
-                                        @endif
-                                    </td>
                                     <td>{{ $item->parent->name or '(trống)' }}</td>
                                     <td>{{ $item->position }}</td>
                                     <td>{{ $item->is_active }}</td>

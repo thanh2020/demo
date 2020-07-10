@@ -6,6 +6,7 @@ use App\Banner;
 use App\brand;
 use App\Category; // cần thêm dòng này nếu chưa có
 use App\Product;
+use App\Rating;
 use Illuminate\Http\Request;
 use Cart;
 use DB;
@@ -103,6 +104,7 @@ class ShopController extends GeneralController
     {
         // step 1 : lấy chi tiết thể loại
         $category = Category::where(['slug' => $category])->first();
+        $rating = Rating::all();
         $url = $request->url();
 
         if (!$category) {
@@ -115,10 +117,9 @@ class ShopController extends GeneralController
         }
 
         $hot = Product::where([
-            ['is_active', '=', 1],
-            ['is_hot', '=', 1]
-        ])->orderBy('id', 'desc')->paginate(5);
-
+            'is_active' => 1,
+            'is_hot' => 1
+        ])->orderBy('id', 'desc')->paginate(4);
 
         // step 2 : lấy list SP liên quan
         $relatedProducts = Product::where([
@@ -126,13 +127,17 @@ class ShopController extends GeneralController
                                 ['category_id', '=' , $category->id ],
                                 ['id', '<>' , $id]
                             ])->orderBy('id', 'desc')->paginate(5);
-        
+
+        $total_point = Rating::where('product_id', $id)->orderBy('point', 'DESC')->selectRaw('point, id,product_id, count(point) as sum_point')->groupBy('point')->get()->toArray();
+
         return view('shop.product',[
             'category' => $category,
             'product' => $product,
             'relatedProducts' => $relatedProducts,
             'url' => $url,
-            'hot' => $hot
+            'hot' => $hot,
+            'rating' => $rating,
+            'total_point' => $total_point
         ]);
     }
 
