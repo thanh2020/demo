@@ -7,6 +7,7 @@ use App\brand;
 use App\Category; // cần thêm dòng này nếu chưa có
 use App\Product;
 use App\Rating;
+use App\User;
 use Illuminate\Http\Request;
 use Cart;
 use DB;
@@ -44,9 +45,9 @@ class ShopController extends GeneralController
 
                 $list[$key]['category'] = $category;
                 $list[$key]['products'] = Product::where(['is_active' => 1])
-                                                                ->whereIn('category_id' , $ids)
-                                                                ->limit(10)->orderBy('id', 'desc')
-                                                                ->get();
+                                                ->whereIn('category_id' , $ids)
+                                                ->limit(10)->orderBy('id', 'desc')
+                                                ->get();
                                                                 
             }
         }
