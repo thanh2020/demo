@@ -7,7 +7,6 @@ use App\brand;
 use App\Category; // cần thêm dòng này nếu chưa có
 use App\Product;
 use App\Rating;
-use App\User;
 use Illuminate\Http\Request;
 use Cart;
 use DB;
