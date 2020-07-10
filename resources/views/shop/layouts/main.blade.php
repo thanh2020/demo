@@ -170,8 +170,11 @@
     google.maps.event.addDomListener(window, 'load', initialize);
 </script>
 <!-- main js -->
-<script src="/shop/js/main.js"></script>
+<!-- <script src="/shop/js/main.js"></script> -->
 
+@if(request()->route()->getAction()['controller'] ==  "App\Http\Controllers\ShopController@index")
+<script src="/shop/js/main.js"></script>
+@endif
 <!-- <script type="text/javascript">
    $('#header-search').on('keyup', function() {
        var search = $(this).serialize();
@@ -193,7 +196,7 @@
 
 <div id="fb-root"></div>
 <script async defer crossorigin="anonymous" src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v7.0" nonce="WyfR4OPP"></script>
-
+@yield('script')
 </body>
 
 </html>

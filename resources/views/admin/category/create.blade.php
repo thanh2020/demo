@@ -34,10 +34,10 @@
                                 <label for="exampleInputEmail1">Tên danh mục</label>
                                 <input type="text" class="form-control" id="name" name="name" placeholder="Nhập tên danh mục">
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="exampleInputFile">File</label>
                                 <input type="file" id="image" name="image">
-                            </div>
+                            </div> -->
                             <div class="checkbox">
                                 <label>
                                     <input type="checkbox" value="1" name="is_active"> Trạng thái

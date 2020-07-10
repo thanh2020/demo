@@ -21,10 +21,10 @@
                                 <td><b>Tên danh mục:</b></td>
                                 <td>{{ $data->name }}</td>
                             </tr>
-                            <tr>
+                            <!-- <tr>
                                 <td><b>Hình ảnh:</b></td>
                                 <td>{{ $data->image }}</td>
-                            </tr>
+                            </tr> -->
                             <tr>
                                 <td><b>Danh mục cha:</b></td>
                                 <td>{{ $data->parent->name or '(trống)' }}</td>

@@ -34,13 +34,13 @@
                                 <input value="{{ $category->name }}" type="text" class="form-control" id="name"
                                        name="name" placeholder="Nhập tên danh mục">
                             </div>
-                            <div class="form-group">
+                            <!-- <div class="form-group">
                                 <label for="exampleInputFile">Change File</label>
                                 <input type="file" id="new_image" name="new_image"><br>
                                 @if ($item->image)
                                     <img src="{{asset($category->image)}}" width="200">
                                 @endif
-                            </div>
+                            </div> -->
                             <div class="checkbox">
                                 <label>
                                     <input {{ ($category->is_active) ? 'checked':'' }} type="checkbox" value="1"
