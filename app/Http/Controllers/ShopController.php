@@ -102,9 +102,12 @@ class ShopController extends GeneralController
 
     public function getProduct(Request $request, $category , $slug , $id)
     {
+
         // step 1 : lấy chi tiết thể loại
         $category = Category::where(['slug' => $category])->first();
         $rating = Rating::all();
+
+        $sum = $rating->sum('point');
         $url = $request->url();
 
         if (!$category) {
@@ -112,6 +115,8 @@ class ShopController extends GeneralController
         }
         // get chi tiet sp
         $product = Product::find($id);
+        $product->update(['views'=>$product->views+1]);
+
         if (!$product) {
             return $this->notfound();
         }
@@ -128,7 +133,17 @@ class ShopController extends GeneralController
                                 ['id', '<>' , $id]
                             ])->orderBy('id', 'desc')->paginate(5);
 
-        $total_point = Rating::where('product_id', $id)->orderBy('point', 'DESC')->selectRaw('point, id,product_id, count(point) as sum_point')->groupBy('point')->get()->toArray();
+        // danh gia sp
+        $groupByPoint = Rating::where('product_id', $id)->orderBy('point', 'DESC')->selectRaw('point, id,product_id, count(point) as sum_point')->groupBy('point')->get();
+        
+        // show những sp được đánh giá
+        $groupByPoint = $groupByPoint->keyBy('point');
+
+        // tổng đánh giá
+        $total_rating = Rating::where('product_id', $id)->count();
+
+        // tổng điểm
+        $total_point = Rating::where('product_id', $id)->sum('point');
 
         return view('shop.product',[
             'category' => $category,
@@ -137,7 +152,9 @@ class ShopController extends GeneralController
             'url' => $url,
             'hot' => $hot,
             'rating' => $rating,
-            'total_point' => $total_point
+            'groupByPoint' => $groupByPoint,
+            'total_rating'   => $total_rating,
+            'total_point' => $total_point,
         ]);
     }
 

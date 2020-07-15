@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $table = "products"; // chi dinh ten CSDL
+    protected $fillable = ['views'];
 
     public function category()
     {

@@ -37,7 +37,7 @@
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->parent->name or '(trống)' }}</td>
                                     <td>{{ $item->position }}</td>
-                                    <td class="{{ $item->get($item->is_active)['class'] }}">{{ $item->get($item->is_active)['name1'] }}</td>
+                                    <td class="{{ $item->get($item->is_active)['class'] }}">{{ $item->get($item->is_active)['name'] }}</td>
                                     <td class="text-center">
                                         <a href="{{route('admin.category.show', ['id'=> $item->id ])}}" class="btn btn-default">Xem</a>
                                         <a href="{{route('admin.category.edit', ['id'=> $item->id])}}" class="btn btn-info">Sửa</a>
@@ -106,7 +106,9 @@
                                     <td>{{ $item->name }}</td>
                                     <td>{{ $item->parent->name or '(trống)' }}</td>
                                     <td>{{ $item->position }}</td>
-                                    <td>{{ $item->is_active }}</td>
+                                    <td class="{{$item->get($item->is_active)['class']}}">
+                                        {{$item->get($item->is_active)['name']}}
+                                    </td>
                                     <td class="text-center">
                                         <a href="{{route('admin.category.show', ['id'=> $item->id ])}}" class="btn btn-default">Xem</a>
                                         <a href="{{route('admin.category.edit', ['id'=> $item->id])}}" class="btn btn-info">Sửa</a>
@@ -129,3 +131,14 @@
         <!-- /.row -->
     </section>
 @endsection
+
+<!-- @section('my_javascript')
+    <script>
+        $(document).ready(function(){
+            $(".star5").click(function () {
+                star = $(this).val();
+                $('#hdfStar').val(star);
+            });
+        });
+    </script>
+@endsection -->

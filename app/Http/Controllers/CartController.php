@@ -15,7 +15,7 @@ class CartController extends Controller
     public function getAddCart(Request $request, $id)
     {
     	// Cart::add('293ad', 'Product 1', 1, 9.99);
-    	$product = Product::where('product_name',$id);
+    	// $product = Product::where('product_name',$id);
     	$product = Product::find($id);
     	$data['id'] = $product->id;
     	$data['name'] = $product->name;
@@ -68,7 +68,12 @@ class CartController extends Controller
         $order->phone = $request->input('phone');
         $order->email = $request->input('email');
         $order->address = $request->input('address');
-        $order->note = $request->input('note');
+
+        if ($request->has('note')) {
+            $order->note = $request->input('note');
+        }
+        $order->note = "";
+
         $order->total = $total;
         $order->order_status_id = 1; // 1 = mới
         // Lưu vào bảng chỉ tiết đơn đặt hàng

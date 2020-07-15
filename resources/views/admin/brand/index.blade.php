@@ -45,7 +45,8 @@
                                     </td>
                                     <td>{{ $item->website }}</td>
                                     <td>{{ $item->position }}</td>
-                                    <td>{{ ($item->is_active == 1) ? 'Hiển thị' : 'Ẩn' }}</td>
+                                    <td class="{{$item->bran($item->is_active)['class']}}">{{ $item->bran($item->is_active)['name'] }}</td>
+                                    <!-- <td>{{ ($item->is_active == 1) ? 'Hiển thị' : 'Ẩn' }}</td> -->
                                     <td class="text-center">
                                         <a href="{{route('admin.brand.show', ['id'=> $item->id ])}}" class="btn btn-default">Xem</a>
                                         <a href="{{route('admin.brand.edit', ['id'=> $item->id])}}" class="btn btn-info">Sửa</a>

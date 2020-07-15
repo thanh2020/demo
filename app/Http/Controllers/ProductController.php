@@ -114,7 +114,7 @@ class ProductController extends Controller
         // get data from db
         $data = Product::findorFail($id);
         $category_name = Category::where('id', $data->category_id)->first();
-
+        
         return view('admin.product.show', [
             'data' => $data,
             'category_name' => $category_name
@@ -188,15 +188,17 @@ class ProductController extends Controller
         $product->url = $request->input('url');
 
         // Trạng thái
+        $product->is_active = 0;
         if ($request->has('is_active')){//kiem tra is_active co ton tai khong?
             $product->is_active = $request->input('is_active');
         }
-
+        
         // Sản phẩm Hot
+        $product->is_hot = 0;
         if ($request->has('is_hot')){
-            $product->is_hot = $request->input('is_active');
+            $product->is_hot = $request->input('is_hot');
         }
-
+        
         $product->summary = $request->input('summary');
         $product->description = $request->input('description');
         $product->meta_title = $request->input('meta_title');

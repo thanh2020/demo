@@ -170,32 +170,38 @@
                         </div>
                     </div>
                     <div class="container" style="display: flex; align-items: center; border: 1px solid pink">
-                        <div style="width: 20%; font-size: 40px;color: #fd9727;line-height: 40px; padding: 0 30px;" class="rating"><b>2.5</b>
+                        <div style="width: 20%; font-size: 40px;color: #fd9727;line-height: 40px; padding: 0 30px;" class="rating">
+                            <b>
+                                @if($total_rating > 0)
+                                    {{round($total_point / $total_rating,1)}}
+                                @else 2.5
+                                @endif
+                            </b>
+
                             <span>
                                 <i class="fa fa-star"></i>
                             </span>
                         </div>
 
-                        <div style="width: 60%; padding: 20px;">
-                            <?php $t = 0; ?>
-                            @for($i = 5; $i >=1; $i--)
+                        <div style="width: 60%; padding: 20px;">                            
+                            @for($i = 5; $i >= 1; $i--)
                             <div style="width: 100%; float: left;display: flex; align-items: center">
-                                <div style="width: 10%;">
-                                   
+                                <div style="width: 10%;">                                   
                                     <div style="">
                                         {{$i}} <i class="fa fa-star"></i>
-                                    </div>
-                                    
+                                    </div>                                    
                                 </div>
-                                <div style="width: 70%;"><span style="display: block; height: 6px; border: 1px solid #dedede; border-radius: 5px" >%</span>
+                                <div style="width: 70%;">
+                                    <span style="display: block; height: 6px; border: 1px solid #dedede; border-radius: 5px" >
+                                        @if($total_rating > 0)
+                                            {{round(($groupByPoint[$i]['sum_point'] ?? 0) * 100 / $total_rating)}}
+                                        @endif                                
+                                    %</span>
                                 </div>
                                 <div style="width: 20%; padding: 10px;">
-                                    <a href="">{{$total_point[$t]['sum_point'] ?? 0}} đánh giá</a>
-                                </div>
-                                
-                                
-                            </div>
-                            <?php $t++; ?>
+                                    <a href="">{{data_get($groupByPoint,"$i.sum_point", 0)}} đánh giá</a>
+                                </div>                                
+                            </div>                            
                             @endfor
                         </div>
 
@@ -216,6 +222,8 @@
                                         @for($i = 1; $i <= 5; $i++)
                                         <input type="radio"  class="star5" name="rating" value="{{$i}}" />
                                         <!-- <label class ="full" data-star="{{$i}}" for="star{{$i}}" title=""></label> -->
+                                        <!-- <span class="star5 star-input" name="rating" value="{{$i}}">
+                                            <i class="fa fa-star"></i></span> -->
                                         @endfor
                                     </div>  
                                 </span>
@@ -227,21 +235,20 @@
                                 <div class="box-body">
                                     <div class="form-group">
                                         <textarea name="content" class="form-control" rows="3" placeholder="Nhập đánh giá về sản phẩm" ></textarea>
+                                        
+                                            @if($errors->has('content'))
+                                                {{$errors->first('content')}}
+                                            @endif
+                                        
                                     </div>
                                 </div>
-                                <!-- <div class="form-group">
-                                    <div class="form-group">
-                                        
+                                <div class="form-group">
+                                    <div class="form-group">  
                                         <input type="text" class="form-control" name="name" placeholder="Nhập Họ tên">
-                                    </div>
-                                    <div class="form-group">
-                                        
-                                        <input type="text" class="form-control" name="phone" placeholder="Nhập số điện thoại">
-                                    </div>
-                                    <div class="form-group">
-                                        
+                                    </div> 
+                                    <div class="form-group">  
                                         <input type="text" class="form-control" name="email" placeholder="Nhập Email">
-                                    </div> -->
+                                    </div>
                                 </div>
                                 <div class="box-footer">
                                     <button type="submit" style="background: #337ab7;padding: 5px;border-radius: 3px;color: white;">Gửi đánh giá</button>

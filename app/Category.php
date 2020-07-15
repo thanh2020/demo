@@ -27,11 +27,11 @@ class Category extends Model
 
     protected $status = [
         1 => [
-            'name1' => 'public',
+            'name' => 'public',
             'class' => 'btn btn-info'
         ],
         0 => [
-            'name1' => 'private',
+            'name' => 'private',
             'class' => 'btn btn-danger'
         ]
     ];

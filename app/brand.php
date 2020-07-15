@@ -17,4 +17,19 @@ class brand extends Model
     {
     	return $this->belongTo('App\Category');
     }
+
+    protected $active = [
+    	1 => [
+    		'name' => 'public',
+    		'class' => 'btn btn-info'
+    	],
+    	0 => [
+    		'name' => 'private',
+    		'class' => 'btn btn-danger'
+    	]
+    ];
+
+    public function bran(){
+    	return array_get($this->active,$this->is_active);
+    }
 }
