@@ -81,20 +81,18 @@ color: #222;
                 <div class="main-slider-area">
                     <div class="slider-area">
                         <div id="wrapper">
-                            <!-- Kiểm tra nếu có dữ liệu banners thì mới hiển thị -->
-                            @if(!empty($banners))
                             <div class="slider-wrapper">
-                                <div id="mainSlider" class="nivoSlider">
+                                <div class="nivoSlider" id="mainSlider">
+                                    @if(!empty($banners))
                                     @foreach($banners as $banner)
-                                    <a href="{{$banner->url}}"><img src="{{ asset($banner->image) }}" height="390px" alt="{{ $banner->title }}"/></a>
+                                    <a target="{{$banner->target}}" href="{{$banner->url}}"><img title="{{$banner->name}}" style="width: 848px; visibility: hidden;" alt="{{$banner->name}}" src="{{asset($banner->image)}}"></a>
                                     @endforeach
+                                    @endif       
                                 </div>
-                            </div>
-                            @endif
-                        </div>
-                    </div>
+                            </div>                              
+                        </div>                                          
+                    </div>  
                 </div>
-                <!-- MAIN-SLIDER-AREA END -->
             </div>
         </div>
     </div>
@@ -117,6 +115,7 @@ color: #222;
                         <div class="feartured-carousel">
                             <!-- SINGLE ITEM START -->
                             @foreach($item['products'] as $product)
+                            
                             <div class="item">
                                 <!-- SINGLE-PRODUCT-ITEM START -->
                                 <div class="single-product-item">
@@ -124,24 +123,36 @@ color: #222;
                                         <a href="{{ route('shop.product', ['category' => $item['category']->slug, 'slug' => $product->slug , 'id' => $product->id]) }}">
                                             <img width="180" height="180" src="{{ asset($product->image)  }}" alt="product-image" />
                                         </a>
-                                        <div class="overlay-content">
+                                        <!-- <div class="overlay-content">
                                             <ul>
                                                 <li><a href="#" title="Quick view"><i class="fa fa-search"></i></a></li>
                                                 <li><a href="#" title="Quick view"><i class="fa fa-shopping-cart"></i></a></li>
                                                 <li><a href="#" title="Quick view"><i class="fa fa-retweet"></i></a></li>
                                                 <li><a href="#" title="Quick view"><i class="fa fa-heart-o"></i></a></li>
                                             </ul>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <div class="product-info">
                                         <a href="">{{ $product->name }}</a>
                                         <div class="price-box">
-                                            <span class="price">{{ number_format($product->sale,0,",",".") }}đ<span class="p-price">{{ number_format($product->price,0,",",".") }}đ</span></span>
+                                            @if($product->sale > 0)
+                                            <span class="price">
+                                                {{ number_format($product->sale,0,",",".") }}đ 
+                                            </span>
+                                            <span class="p-price">
+                                                {{ number_format($product->price,0,",",".") }}đ
+                                            </span>
+                                            @else
+                                            <span class="price">
+                                                {{ number_format($product->price,0,",",".") }}đ
+                                            </span>
+                                            @endif  
                                         </div>
                                     </div>
                                 </div>
                                 <!-- SINGLE-PRODUCT-ITEM END -->
                             </div>
+                            
                             @endforeach
                         </div>
                         <!-- FEARTURED-CAROUSEL END -->

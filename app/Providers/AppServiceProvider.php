@@ -22,10 +22,10 @@ class AppServiceProvider extends ServiceProvider
             $banners = Banner::where('is_active',1)->get();
             $categories = Category::all();
             $products = Product::all();
-            $brand = brand::all();
+            $brands = Brand::where('id',6)->get();
 
             $view->with(['categories'=>$categories,
-            'banners'=>$banners,'products'=>$products, 'brand'=>$brand]);
+            'banners'=>$banners,'products'=>$products, 'brands'=>$brands]);
         });
     }
 

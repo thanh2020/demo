@@ -5,6 +5,7 @@
             Danh Sách Banner <a href="{{route('admin.banner.create')}}" class="btn btn-info pull-right"><i class="fa fa-plus"></i> Thêm Banner</a>
         </h1>
     </section>
+
     <section class="content">
         <div class="row">
             <div class="col-xs-12">

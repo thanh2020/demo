@@ -61,6 +61,7 @@
                                         <a href="{{route('admin.product.edit', ['id'=> $item->id])}}" class="btn btn-info">Sửa</a>
                                         <!-- Thêm sự kiện onlick cho nút xóa -->
                                         <a href="javascript:void(0)" class="btn btn-danger" onclick="destroyProduct({{ $item->id }})" >Xóa</a>
+                                        <!-- <a href="{{asset('add/product')}}" class="btn btn-default">Thêm ảnh</a> -->
                                     </td>
                                 </tr>
                             @endforeach

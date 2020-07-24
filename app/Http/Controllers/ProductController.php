@@ -6,6 +6,7 @@ use App\Brand;
 use App\Product;
 use App\Category;
 use App\Vendor;
+use App\Image;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -18,7 +19,6 @@ class ProductController extends Controller
     public function index()
     {
         $data = Product::latest()->paginate(10);
-
         return view('admin.product.index', [
                'data' => $data
         ]);
@@ -51,7 +51,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
          $validatedData = $request->validate([
-            'name' => 'required|max:255',
+            'name' => 'required|unique:products|max:255',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:10000'
          ]);
 
@@ -99,7 +99,30 @@ class ProductController extends Controller
         $product->meta_description = $request->input('meta_description');
         $product->save();
 
-        // chuyển hướng đến trang
+        $productId = $product->id;
+
+        //xu ly upload nhieu anh
+
+        try {
+            //lay ra tat ca anh gui len
+            $imageMutiple = $request->imageMutiple;
+            
+            //lay ra tat ca cac hanh dong
+            $is_active_mutiple = $request->is_active_mutiple;
+
+            foreach ($imageMutiple as $key => $value) {
+                $img = new Image;
+                $anh = $value->getClientOriginalName();
+                $img->image = $value->move('image',  $anh);
+                $img->product_id = $productId;
+                $img->is_active = $is_active_mutiple[$key] ?? 0;
+                $img->save();
+
+            }
+        } catch (\Exception $e) {
+            dd("khong the upload anh");
+        }
+
         return redirect()->route('admin.product.index');
     }
 
@@ -133,12 +156,14 @@ class ProductController extends Controller
         $categories = Category::all();
         $brands = Brand::all();
         $vendors = Vendor::all();
+        $images = Image::where('product_id',$id)->get();
 
         return view('admin.product.edit', [
             'product' => $product,
             'categories' => $categories,
             'brands' => $brands,
-            'vendors' => $vendors
+            'vendors' => $vendors,
+            'images' => $images
         ]);
 
     }
@@ -153,7 +178,7 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'name' => 'required|max:255',
+            'name' => 'required|unique:products|max:255',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:10000'
         ]);
 
@@ -175,6 +200,20 @@ class ProductController extends Controller
             $request->file('new_image')->move($path_upload,$filename);
 
             $product->image = $path_upload.$filename;
+        }
+
+        $productId = $product->id;
+        $img = new Image;
+        if ($request->hasFile('new_imageMutiple')) {
+            // xóa file cũ
+            @unlink(public_path($img->image));
+            $file = $request->file('new_imageMutiple');
+
+            $anh = $request->new_imageMutiple->getClientOriginalName();
+            $img->image = $request->new_imageMutiple->move('image',  $anh);
+            $img->product_id = $productId;
+            $img->is_active = $request->new_is_active_mutiple;
+            $img->save();
         }
 
         $product->stock = $request->input('stock'); // số lượng
@@ -225,4 +264,26 @@ class ProductController extends Controller
             'status' => true
         ], 200);
     }
+
+    public function create_add()
+    {
+        $products = Product::all();
+        return view('admin.product.image',[
+            'products' => $products,
+        ]);
+    }
+
+    // public function post_add(Request $request)
+    // {
+    //     $validatedData = $request->validate([
+    //         'image' => 'required',
+    //     ]);
+    //     $img = new Image;
+    //     $anh = $request->image->getClientOriginalName();
+    //     $img->image = $request->image->move('image',$anh);
+    //     $img->product_id = $request->product_id;
+    //     $img->is_active = $request->is_active;
+    //     $img->save();
+    //     return back();
+    // }
 }

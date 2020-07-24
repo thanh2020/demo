@@ -17,7 +17,7 @@
                         <ul class="list-inline">
                             <li><a href="{{ route('contact.index') }}">Liên Hệ</a></li>
                             <li><a href="{{asset('cart/show')}}">Giỏ Hàng</a></li>
-                            <li><a href="registration.html">Đăng Nhập</a></li>
+                            <!-- <li><a href="registration.html">Đăng Nhập</a></li> -->
                         </ul>
                     </nav>
                 </div>
@@ -34,7 +34,7 @@
             <div class="col-sm-12">
                 <!-- LOGO START -->
                 <div class="logo">
-                    <a href="/"><img src="shop/img/logo2.png" alt="bstore logo" /></a>
+                    <a href="/"><img src="/shop/img/logo2.png" alt="bstore logo" /></a>
                 </div>
                 <!-- LOGO END -->
                 <!-- HEADER-RIGHT-CALLUS START -->

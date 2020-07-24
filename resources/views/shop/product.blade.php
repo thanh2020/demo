@@ -1,7 +1,9 @@
 @extends('shop.layouts.main')
 
 @section('content')
-
+@if(Session::has('key'))
+    
+@endif
 <style>
     .list_start i:hover{
         cursor: pointer;
@@ -65,6 +67,7 @@
                         <span> <i class="fa fa-caret-right"> </i> </span>
                         <a href="shop-gird.html">{{ $category->name }}</a>
                     </div>
+                    
                     <!-- BSTORE-BREADCRUMB END -->
                 </div>
             </div>
@@ -82,6 +85,11 @@
                                             <a class="new-mark-box" href="#">new</a>
                                             <a class="fancybox" href="img/product/sale/1.jpg" data-fancybox-group="gallery"><span class="btn large-btn">View larger <i class="fa fa-search-plus"></i></span></a>
                                         </div>
+                                        <div>
+                                            @foreach($image as $img)
+                                            <a style="padding-right: 20px" href=""><img width="60px" class="" src="{{asset($img->image)}}"></a>
+                                            @endforeach
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -90,8 +98,23 @@
                                 <ul class="nav nav-tabs select-product-tab bxslider">
                                     <li class="active">     
                                         <p><span>{!! $product->summary !!}</span></p>
-                                        
                                     </li>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Xem thêm cấu hình Chi tiết</button>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-body">
+{!! $product->description!!}
+</div>
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<!-- <button type="button" class="btn btn-primary">Send message</button> -->
+</div>
+</div>
+</div>
+</div>
                                 </ul>
                             </div>
                         </div>
@@ -140,11 +163,15 @@
                                     </div>
                                 </div>
                                 <div class="single-product-condition">
-                                    <p>Reference: <span>demo_1</span></p>
+                                    <!-- <p>Reference: <span>demo_1</span></p> -->
                                     <p>Condition: <span>New product</span></p>
                                 </div>
                                 <div class="single-product-price">
+                                    @if($product->sale)
                                     <h2>{{number_format("$product->sale",0,",",".")}}  <span style="text-transform: lowercase;">đ</span></h2>
+                                    @else
+                                        <h2>{{number_format("$product->price",0,",",".")}}  <span style="text-transform: lowercase;">đ</span></h2>
+                                    @endif
                                 </div>
                                 <div class="single-product-desc">
                                     <p>Faded short sleeves t-shirt with high neckline. Soft and stretchy material for a comfortable fit. Accessorize with a straw hat and you're ready for summer!</p>
@@ -152,7 +179,7 @@
                                         <p>Trong kho<span>{{$product->stock}} sản phẩm</span></p>
                                     </div>
                                 </div>
-                                <div class="single-product-info">
+                                <!-- <div class="single-product-info">
                                     <a href="#"><i class="fa fa-envelope"></i></a>
                                     <a href="#"><i class="fa fa-print"></i></a>
                                     <a href="#"><i class="fa fa-heart"></i></a>
@@ -162,7 +189,7 @@
                                     <p class="small-title">Color </p>
                                     <a href="#"><span></span></a>
                                     <a class="color-blue" href="#"><span></span></a>
-                                </div>
+                                </div> -->
                                 <div class="single-product-add-cart">
                                     <a class="add-cart-text" title="Add to cart" href="{{asset('cart/add/'.$product->id)}}">Add to cart</a>
                                 </div>
@@ -195,13 +222,13 @@
                                     <span style="display: block; height: 6px; border: 1px solid #dedede; border-radius: 5px" >
                                         @if($total_rating > 0)
                                             {{round(($groupByPoint[$i]['sum_point'] ?? 0) * 100 / $total_rating)}}
-                                        @endif                                
+                                        @endif
                                     %</span>
                                 </div>
                                 <div style="width: 20%; padding: 10px;">
                                     <a href="">{{data_get($groupByPoint,"$i.sum_point", 0)}} đánh giá</a>
-                                </div>                                
-                            </div>                            
+                                </div>
+                            </div>
                             @endfor
                         </div>
 
@@ -431,7 +458,7 @@
                     </div> -->
                     <!-- SINGLE SIDE BAR END -->
                     <!-- SINGLE SIDE BAR START -->
-                    <div class="single-product-right-sidebar clearfix">
+                    <!-- <div class="single-product-right-sidebar clearfix">
                         <h2 class="left-title">Tags </h2>
                         <div class="category-tag">
                             <a href="#">fashion</a>
@@ -444,11 +471,49 @@
                             <a href="#">clothing</a>
                             <a href="#">New</a>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- SINGLE SIDE BAR END -->
                     <!-- SINGLE SIDE BAR START -->
+
                     
+                    
+                    
+
+                    <!-- <div class="row">
+                            <ul class="gategory-product">
+                                
+                                <li class="gategory-product-list col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                                    @if($value)
+                                    
+                                    <div class="single-product-item">
+                                        <div class="product-image">
+                                            <a href="{{ route('shop.product', ['category' => $category->slug, 'slug' => $item->slug , 'id' => $item->id]) }}" title="{{ $product->name }}" ><img src="{{ asset($value->image) }}" alt="{{ $item->name }}"></a>
+                                            <div class="overlay-content">
+                                                <ul>
+                                                    <li><a href="#" title="Quick view"><i class="fa fa-search"></i></a></li>
+                                                    <li><a href="#" title="Quick view"><i class="fa fa-shopping-cart"></i></a></li>
+                                                    <li><a href="#" title="Quick view"><i class="fa fa-retweet"></i></a></li>
+                                                    <li><a href="#" title="Quick view"><i class="fa fa-heart-o"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="product-info">
+                                            <a href="" title="{{ $value->name }}">{{ $value->name }}</a>
+                                            <div class="price-box">
+                                                <span class="price">{{ number_format($value->sale,0,",",".") }}đ<span class="p-price"></span></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    @endif
+                                </li>
+                                
+                                
+                            </ul>
+                    </div> -->
+                                  
                 </div>
+
                 <!-- SINGLE SIDE BAR END -->
             </div>
         </div>
@@ -459,7 +524,7 @@
     <script>
         $(document).ready(function(){
             $(".star5").click(function () {
-                star = $(this).val();
+                let star = $(this).val();
                 $('#hdfStar').val(star);
             });
         });

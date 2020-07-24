@@ -42,7 +42,6 @@
 						<!-- TABLE BODY START -->
 						<tbody>	
 							@foreach($data as $item)
-							
 							<tr>
 								<td class="cart-product">
 									<a href="#"><img alt="Blouse" src="{{asset($item->options->image)}}"></a>
@@ -55,7 +54,11 @@
 								<td class="cart-avail"><span class="label label-success">In stock</span></td>
 								<td class="cart-unit">
 									<ul class="price text-right">
+										@if($item->weight > 0)
+										<li class="price">{{number_format("$item->weight")}}đ</li>
+										@else
 										<li class="price">{{number_format("$item->price")}}đ</li>
+										@endif
 									</ul>
 								</td>
 								<td class="cart_quantity text-center">
@@ -74,7 +77,15 @@
 									</span>
 								</td>
 								<td class="cart-total">
-									<span class="price">{{number_format($item->price*$item->qty)}}đ</span>
+									@if($item->weight > 0)
+										<span class="price">
+											{{number_format($item->weight*$item->qty)}}đ
+										</span>
+									@else
+										<span class="price">
+											{{number_format($item->price*$item->qty)}}đ
+										</span>
+									@endif
 								</td>
 							</tr>
 							@endforeach

@@ -22,15 +22,35 @@
                     <!-- form start -->
                     <form role="form" action="{{route('admin.product.store')}}" method="post" enctype="multipart/form-data">
                         @csrf
+
                         <div class="box-body">
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Tên sản phẩm</label>
-                                <input type="text" class="form-control" id="name" name="name">
+                                <input type="text" class="form-control" id="name" name="name" value="{{old('name')}}">
+                                @if($errors->has('name'))
+                                    <div class="alert alert-danger">{{ $errors->first('name') }}</div>
+                                @endif
+
                             </div>
-                            <div class="form-group">
+
+                            <div class="form-group col-lg-6">
                                 <label for="exampleInputFile">Ảnh sản phẩm</label>
                                 <input type="file" class="" id="image" name="image">
                             </div>
+                            <div class="col-lg-6">
+                                @for($i = 1; $i <= 4; $i++)
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Ảnh kèm theo</label>
+                                        <input type="file" class="" id="image" name="imageMutiple[{{$i}}]">
+                                    <div class="checkbox">
+                                        <label>
+                                        <input type="checkbox" value="1" name="is_active_mutiple[{{$i}}]"> <b>Trạng thái</b>
+                                        </label>
+                                    </div>
+                                </div>
+                                @endfor
+                            </div>
+
                             <div class="form-group">
                                 <label for="exampleInputFile">Số lượng</label>
                                 <input type="number" class="form-control w-50" id="stock" name="stock" value="0">
@@ -48,6 +68,7 @@
                                         <label for="exampleInputFile">Giá khuyến mại (vnđ)</label>
                                         <input type="number" class="form-control" id="sale" name="sale" value="0">
                                     </div>
+
                                 </div>
                                 <!-- /.col-lg-6 -->
                             </div>
@@ -115,7 +136,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Meta Title</label>
-                                <input type="text" class="form-control" id="meta_title" name="meta_title" >
+                                <input type="text" class="form-control" id="meta_title" name="meta_title" value="{{old('meta_title')}}" >
                             </div>
                             <div class="form-group">
                                 <label>Meta Description</label>
