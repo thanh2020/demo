@@ -4,16 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Banner;
 use App\brand;
-use App\Category; // cần thêm dòng này nếu chưa có
+use App\Category;
 use App\Product;
 use App\Rating;
+use App\Image;
 use Illuminate\Http\Request;
 use Cart;
 use DB;
 
 class ShopController extends GeneralController
 {
-
     public function __construct()
     {
         parent::__construct();
@@ -22,7 +22,6 @@ class ShopController extends GeneralController
     // trang chủ
     public function index()
     {
-        $brand = brand::all();
         $carts = Cart::content();
         $categories = $this->categories;
 
@@ -39,22 +38,18 @@ class ShopController extends GeneralController
                     }
                 } // ids = [1,7,8,9,..]
 
-                // $list[$key]['brand'] = Brand::all();
-
-
                 $list[$key]['category'] = $category;
-                $list[$key]['products'] = Product::where(['is_active' => 1])
-                                                ->whereIn('category_id' , $ids)
-                                                ->limit(10)->orderBy('id', 'desc')
-                                                ->get();
+                $list[$key]['products'] = Product::where('is_active', 1)
+                                            ->whereIn('category_id' , $ids)
+                                            ->limit(10)->orderBy('id', 'desc')
+                                            ->get();
                                                                 
             }
         }
 
         return view('shop.home',[
-            'list' => $list,
+            'list'  => $list,
             'carts' => $carts,
-            'brand' =>$brand,
         ]);
     }
 
@@ -64,7 +59,6 @@ class ShopController extends GeneralController
         // step 1 : lấy chi tiết thể loại
         $cate = Category::where(['slug' => $slug])->first();
         // dd($cate);
-        $brand = brand::all();
 
 
         if ($cate) {
@@ -92,8 +86,7 @@ class ShopController extends GeneralController
             return view('shop.products-by-category',[
                 'category' => $category,
                 'products' => $products,
-                'cate' => $cate,
-                'brand' => $brand
+                'cate'     => $cate,
             ]);
         } else {
             return $this->notfound();
@@ -102,9 +95,16 @@ class ShopController extends GeneralController
 
     public function getProduct(Request $request, $category , $slug , $id)
     {
+
         // step 1 : lấy chi tiết thể loại
         $category = Category::where(['slug' => $category])->first();
-        $rating = Rating::all();
+        $rating   = Rating::all();
+        $product  = Product::find($id);
+        $request->session()->put('key',$product);
+        $value    = $request->session()->get('key');
+        $image    = $product->images;
+
+        // $sum = $rating->sum('point');
         $url = $request->url();
 
         if (!$category) {
@@ -112,32 +112,48 @@ class ShopController extends GeneralController
         }
         // get chi tiet sp
         $product = Product::find($id);
+        $product->update(['views'=>$product->views+1]);
+
         if (!$product) {
             return $this->notfound();
         }
 
         $hot = Product::where([
             'is_active' => 1,
-            'is_hot' => 1
+            'is_hot'    => 1
         ])->orderBy('id', 'desc')->paginate(4);
 
         // step 2 : lấy list SP liên quan
-        $relatedProducts = Product::where([
-                                ['is_active' , '=', 1],
-                                ['category_id', '=' , $category->id ],
-                                ['id', '<>' , $id]
+        $relatedProducts =  Product::where([
+                               ['is_active' , '=', 1],
+                               ['category_id', '=' , $category->id ],
+                               ['id', '<>' , $id]
                             ])->orderBy('id', 'desc')->paginate(5);
 
-        $total_point = Rating::where('product_id', $id)->orderBy('point', 'DESC')->selectRaw('point, id,product_id, count(point) as sum_point')->groupBy('point')->get()->toArray();
+        // danh gia sp
+        $groupByPoint = Rating::where('product_id', $id)->orderBy('point', 'DESC')->selectRaw('point, id,product_id, count(point) as sum_point')->groupBy('point')->get();
+        
+        // show những sp được đánh giá
+        $groupByPoint = $groupByPoint->keyBy('point');
+
+        // tổng đánh giá
+        $total_rating = Rating::where('product_id', $id)->count();
+
+        // tổng điểm
+        $total_point = Rating::where('product_id', $id)->sum('point');
 
         return view('shop.product',[
-            'category' => $category,
-            'product' => $product,
+            'category'        => $category,
+            'product'         => $product,
             'relatedProducts' => $relatedProducts,
-            'url' => $url,
-            'hot' => $hot,
-            'rating' => $rating,
-            'total_point' => $total_point
+            'url'             => $url,
+            'hot'             => $hot,
+            'rating'          => $rating,
+            'groupByPoint'    => $groupByPoint,
+            'total_rating'    => $total_rating,
+            'total_point'     => $total_point,
+            'value'           => $value,
+            'image'           => $image,
         ]);
     }
 
@@ -177,7 +193,6 @@ class ShopController extends GeneralController
             ['is_active' , '=', 1]
         ])->paginate(8);
 
-
         return view('shop.search',[
             'data' => $data,
             'search' => $search,
@@ -190,13 +205,12 @@ class ShopController extends GeneralController
         $category = Category::where(['slug' => $slug])->first();
         
         $products = Product::where(['is_active' => 1, 'category_id'=>$category->id])
-                            ->limit(8)->orderBy('id', 'desc')
-                            ->get();
+                        ->limit(8)->orderBy('id', 'desc')
+                        ->get();
 
         return view('shop.slug',[
             'products' => $products,
             'category' => $category,
-            
         ]);
     }
 }

@@ -17,6 +17,11 @@
 // Route::get('/{slug}','ShopController@getProductsByCategory')->name('shop.category');
 
 // Route::get('/{category}/{slug}_{id}', 'ShopController@getProduct')->name('shop.product');
+
+// Route::get('form', function () {
+//     return view('form');
+// });
+
 // lien he
 Route::resource('/contact', 'ContactController');
 
@@ -30,6 +35,9 @@ Route::get('search/','AdminController@search');
 
 Route::get('loginAdmin/','AdminController@getloginAdmin');
 Route::post('loginAdmin/','AdminController@postloginAdmin');
+
+// Route::get('add/product/','ProductController@create_add');
+// Route::post('add/product/','ProductController@post_add');
 
 Route::group(['prefix' => 'admin','as' => 'admin.','middleware'=>'Out'], function(){
     Route::get('/', 'AdminController@index')->name('dashboard');
@@ -99,3 +107,4 @@ Route::any('{all?}','ShopController@index');
 // View::composer('*', function($view){
 //     view()->share('users', Auth::user());
 // });
+

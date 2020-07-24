@@ -20,7 +20,7 @@
                             @foreach($carts as $cart)
 
                             <div class="shipping-item" style="height: 110px;">
-                                <a href="{{ route('cart', ['rowId' => $cart->rowId]) }}"><span class="cross-icon"><i class="fa fa-times-circle"></i></span></a>
+                                <a href="{{$cart->rowId}}"><span class="cross-icon"><i class="fa fa-times-circle"></i></span></a>
                                 <div class="shipping-item-image">
                                     <a href=""><img width="40px" src="{{asset($cart->options->image)}}" alt="{{$cart->name}}" /></a>
                                 </div>

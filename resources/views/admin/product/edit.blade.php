@@ -35,6 +35,26 @@
                                     <img src="{{asset($product->image)}}" width="200">
                                 @endif
                             </div>
+
+                            <div class="col-lg-6">
+                               
+                                <div class="form-group">
+                                    <label for="exampleInputFile">Ảnh kèm theo</label>
+                                        <input type="file" class="" id="image" name="new_imageMutiple">
+                                        @if($images)
+                                        @foreach($images as $image)
+                                            <img src="{{asset($image->image)}}" width="100">
+                                        @endforeach
+                                        @endif
+                                    <div class="checkbox">
+                                        <label>
+                                        <input type="checkbox" value="1" name="new_is_active_mutiple"> <b>Trạng thái</b>
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                            </div>
+
                             <div class="form-group">
                                 <label for="exampleInputFile">Số lượng</label>
                                 <input type="number" class="form-control w-50" id="stock" name="stock" value="{{ $product->stock }}">

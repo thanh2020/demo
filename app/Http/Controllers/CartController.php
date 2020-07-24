@@ -14,14 +14,18 @@ class CartController extends Controller
 {
     public function getAddCart(Request $request, $id)
     {
+
     	// Cart::add('293ad', 'Product 1', 1, 9.99);
-    	$product = Product::where('product_name',$id);
+    	// $product = Product::where('product_name',$id);
     	$product = Product::find($id);
+        if($product->stock == 0){
+            dd('het hang');
+        }
     	$data['id'] = $product->id;
     	$data['name'] = $product->name;
     	$data['qty'] = 1; // so luong = 1
     	$data['price'] = $product->price;
-        $data['weight'] = $product->price;
+        $data['weight'] = $product->sale;
     	$data['options']['image'] = $product->image;
         Cart::add($data);
         // return back();
@@ -68,7 +72,12 @@ class CartController extends Controller
         $order->phone = $request->input('phone');
         $order->email = $request->input('email');
         $order->address = $request->input('address');
-        $order->note = $request->input('note');
+
+        if ($request->has('note')) {
+            $order->note = $request->input('note');
+        }
+        $order->note = "";
+
         $order->total = $total;
         $order->order_status_id = 1; // 1 = mới
         // Lưu vào bảng chỉ tiết đơn đặt hàng
@@ -100,6 +109,8 @@ class CartController extends Controller
             Cart::destroy();
 
             return redirect('')->with('msg', 'Cảm ơn bạn đã đặt hàng.');
+            // $value = $request->session()->pull('msg', 'Cảm ơn bạn đã đặt hàng.');
+            // return redirect('')->with('msg',$value);
         }
     }
 }

@@ -55,12 +55,13 @@
                                     <td>{{ $item->price }}</td>
                                     <td>{{ ($item->is_hot == 1) ? 'Có' : 'Không' }}</td>
                                     <td>{{ $item->position }}</td>
-                                    <td>{{ ($item->is_active == 1) ? 'Hiển thị' : 'Ẩn' }}</td>
+                                    <td>{{ ($item->is_active == 1) ? 'Hiển thị' : 'Không Hiển thị' }}</td>
                                     <td class="text-center">
                                         <a href="{{route('admin.product.show', ['id'=> $item->id ])}}" class="btn btn-default">Xem</a>
                                         <a href="{{route('admin.product.edit', ['id'=> $item->id])}}" class="btn btn-info">Sửa</a>
                                         <!-- Thêm sự kiện onlick cho nút xóa -->
                                         <a href="javascript:void(0)" class="btn btn-danger" onclick="destroyProduct({{ $item->id }})" >Xóa</a>
+                                        <!-- <a href="{{asset('add/product')}}" class="btn btn-default">Thêm ảnh</a> -->
                                     </td>
                                 </tr>
                             @endforeach

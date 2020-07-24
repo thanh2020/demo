@@ -19,9 +19,12 @@ class GeneralController extends Controller
         // 2. Lấy dữ liệu - Banner
         $banners = Banner::where('is_active' , 1)->get();
 
-        $this->categories = $categories;
+        $brands = Banner::where('id' , 6)->get();
 
-        view()->share(['categories' => $categories, 'banners' => $banners]);
+        $this->categories = $categories;
+        $this->brands = $brands;
+
+        view()->share(['categories' => $categories, 'banners' => $banners, 'brands' => $brands]);
     }
 
     public function notfound()

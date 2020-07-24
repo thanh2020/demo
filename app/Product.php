@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $table = "products"; // chi dinh ten CSDL
+    protected $fillable = ['views'];
 
     public function category()
     {
@@ -16,5 +17,10 @@ class Product extends Model
     public function brand()
     {
     	return $this->belongTo('App\brand');
+    }
+
+    public function images()
+    {
+        return $this->hasMany('App\Image');
     }
 }

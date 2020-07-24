@@ -38,12 +38,16 @@ class RatingController extends Controller
     {
         $validateDate = $request->validate([
             'point' => 'required',
+            'name' => 'required',
+            'email' => 'required|email',
             'content' => 'required'
         ]);
         $rating = new Rating;
         $rating->product_id = $request->product_id;
         $rating->point      = $request->point;
         $rating->content    = $request->content;
+        $rating->name    = $request->name;
+        $rating->email    = $request->email;
         $rating->save();
         return back();
     }
